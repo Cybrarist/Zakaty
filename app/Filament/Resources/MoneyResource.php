@@ -27,7 +27,6 @@ class MoneyResource extends Resource
     protected static ?string $navigationIcon = 'heroicon-o-banknotes';
     protected static ?int $navigationSort=1;
 
-
     public static function getLabel(): ?string
     {
         return __('general.money.title');
@@ -45,10 +44,13 @@ class MoneyResource extends Resource
     public static function form(Form $form): Form
     {
         return $form
-            ->columns(4)
+            ->columns(['md' => 2, 'lg' => 4])
             ->schema([
                 TextInput::make('name')
-                    ->columnSpan(2)
+                    ->columnSpan([
+                        'md'=>1,
+                        'lg'=>2
+                    ])
                     ->autofocus()
                     ->label('Account Name')
                     ->string()

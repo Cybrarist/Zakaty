@@ -39,7 +39,6 @@ class SilverResource extends Resource
             ->columns(4)
             ->schema([
 
-
                 Forms\Components\Section::make([
                     TextInput::make('name')
                         ->columnSpanFull()
@@ -77,7 +76,13 @@ class SilverResource extends Resource
                         ->inline(false)
                         ->default(true),
 
-                ])->columnSpan(3)
+                ])
+                    ->columnSpan([
+                        'sm'=>1,
+                        'md'=>1,
+                        'lg'=>3
+
+                    ])
                     ->columns(3),
 
 
@@ -111,7 +116,12 @@ class SilverResource extends Resource
                         ->native(false),
 
 
-                ])->columnSpan(1),
+                ])
+                    ->columnSpan([
+                        'sm'=>4,
+                        'md'=>1,
+                        'lg'=>1
+                    ]),
 
                 Textarea::make('notes')
                     ->columnSpanFull()

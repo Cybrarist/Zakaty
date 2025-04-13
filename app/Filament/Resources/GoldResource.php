@@ -89,8 +89,14 @@ class GoldResource extends Resource
                         ->inline(false)
                         ->default(true),
 
-                ])->columnSpan(3)
-                ->columns(3),
+                ])
+                    ->columnSpan([
+                        'sm'=>1,
+                        'md'=>1,
+                        'lg'=>3
+
+                    ])
+                    ->columns(3),
 
 
                 Forms\Components\Section::make([
@@ -123,7 +129,12 @@ class GoldResource extends Resource
                         ->native(false),
 
 
-                ])->columnSpan(1),
+                ])
+                    ->columnSpan([
+                        'sm'=>4,
+                        'md'=>1,
+                        'lg'=>1
+                    ]),
 
                 Textarea::make('notes')
                     ->label(__('general.notes'))
