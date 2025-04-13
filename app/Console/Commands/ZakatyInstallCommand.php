@@ -67,10 +67,9 @@ class ZakatyInstallCommand extends Command
         Artisan::call("icons:clear", [], $this->output);
         Artisan::call("config:clear", [], $this->output);
 
-        $timezone = text(
+        $timezone = select(
             label: "What is your timezone",
-            placeholder: "UTC",
-            required: true,
+            options: timezone_identifiers_list()
         );
         File::append(".env", "APP_TIMEZONE=$timezone\n");
 

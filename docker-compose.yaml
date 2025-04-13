@@ -1,6 +1,6 @@
 services:
-  zakah-tracker:
-    image: cybrarist/zakah-tracker:latest
+  zakaty:
+    image: cybrarist/zakaty:latest
 #    build:
 #      context: .
     ports:
@@ -22,4 +22,6 @@ services:
       MAIL_PASSWORD: "app password"
       MAIL_ENCRYPTION: tls
       MAIL_FROM_ADDRESS: "email@gmail.com"
+      EXCHANGE_RATE_API_KEY: ""
+      PRECIOUS_METAL_PRICE_API_KEY: ""
 

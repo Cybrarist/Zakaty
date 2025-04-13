@@ -14,9 +14,9 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-//        $this->call([
-//            CurrencySeeder::class,
-//        ]);
+        $this->call([
+            CurrencySeeder::class,
+        ]);
 
 //        if (app()->isLocal()){
 //
@@ -34,12 +34,12 @@ class DatabaseSeeder extends Seeder
 //            ]);
 //        }
 //
-        $this->call([
-            MoneySeeder::class,
-            GoldSeeder::class,
-            SilverSeeder::class,
-        ]);
-
+//        $this->call([
+//            MoneySeeder::class,
+//            GoldSeeder::class,
+//            SilverSeeder::class,
+//        ]);
+//
         Artisan::call('exchange:refresh-all');
     }
 }

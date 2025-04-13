@@ -1,6 +1,6 @@
 #!/bin/sh
 
-image="cybrarist/zakah-tracker"
+image="cybrarist/zakaty"
 version=$1
 
 
