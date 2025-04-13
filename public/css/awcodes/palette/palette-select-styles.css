@@ -1,0 +1,30 @@
+.choices__inner .palette-select-option {
+    display: flex;
+    gap: 0.5rem;
+    align-items: center;
+    line-height: 1;
+    height: 1rem;
+    position: absolute;
+    top: calc(50% - 0.5rem);
+}
+
+.choices__list--dropdown .palette-select-option {
+    display: flex;
+    gap: 0.5rem;
+    align-items: center;
+    line-height: 1;
+    height: 1rem;
+}
+
+.palette-select-option span {
+    display: block;
+    height: 1rem;
+    line-height: 1;
+}
+
+.palette-select-option span:first-child {
+    width: 1rem;
+    height: 1rem;
+    border-radius: 100%;
+    flex-shrink: 0;
+}

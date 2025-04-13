@@ -1,0 +1,25 @@
+#!/bin/sh
+
+image="cybrarist/zakah-tracker"
+version=$1
+
+
+php artisan migrate:fresh --force --seed
+
+rm storage/debugbar/*
+rm storage/views/*
+rm -r storage/framework/cache/*
+rm storage/framework/sessions/*
+rm storage/logs/*
+
+php artisan exchange:price
+php artisan gold:price
+php artisan silver:price
+
+docker build --platform linux/amd64,linux/arm64 -t "$image:v$version" .
+docker build --platform linux/amd64,linux/arm64 -t "$image:latest" .
+
+
+
+docker push "$image:v$version"
+docker push "$image:latest"
