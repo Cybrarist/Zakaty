@@ -131,7 +131,8 @@ class ZakahHelper
             if ($total_money >= $minimum_nisab) {
 
                 if ((! $user->next_money_zakah_date || $user->next_money_zakah_date?->isPast()) && ! $user->next_money_zakah_date?->isToday()) {
-                    $user->next_money_zakah_date = today()->addYear();
+                    //consider the difference between solar and lunar year.
+                    $user->next_money_zakah_date = today()->addYear()->subDays(12);
                 }
 
                 $user->total_pay_money = $total_money / 40;

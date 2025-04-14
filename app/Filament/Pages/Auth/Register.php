@@ -52,7 +52,7 @@ class Register extends \Filament\Pages\Auth\Register
                     ->label('Default Currency')
                     ->model(User::class)
                     ->options(Currency::all()->pluck('code_name', 'id'))
-                    ->native('false')
+                    ->native(false)
                     ->preload()
                     ->required()
                     ->searchable(),

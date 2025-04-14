@@ -39,7 +39,7 @@ class EditProfile extends \Filament\Pages\Auth\EditProfile
                             ->label('Default Currency')
                             ->model(User::class)
                             ->options(Currency::all()->pluck('code_name', 'id'))
-                            ->native('false')
+                            ->native(false)
                             ->preload()
                             ->required()
                             ->searchable(),
