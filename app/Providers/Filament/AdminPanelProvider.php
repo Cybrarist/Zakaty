@@ -33,11 +33,6 @@ class AdminPanelProvider extends PanelProvider
 {
     public function panel(Panel $panel): Panel
     {
-        $current_color= match(true){
-            Str::startsWith( Request::getPathInfo(), '/gold')=> Color::Amber,
-            Str::startsWith( Request::getPathInfo(), '/silver')=> Color::Stone,
-            default => Color::Green
-        };
 
 //        Auth::user()->settings['admin_panel_color'] ? Auth::user()->settings['admin_panel_color'] :
 //        function () use ($current_color) {
@@ -56,8 +51,12 @@ class AdminPanelProvider extends PanelProvider
             ->registration(Register::class)
             ->login(action: \App\Filament\Pages\Auth\Login::class)
             ->profile(EditProfile::class,false)
-            ->colors ([
-                'primary' =>$current_color
+            ->colors (fn ()=> [
+                'primary' => match(true){
+                    Str::startsWith( Request::getPathInfo(), '/gold')=> Color::Amber,
+                    Str::startsWith( Request::getPathInfo(), '/silver')=> Color::Stone,
+                    default => Color::Green
+                }
             ])
             ->discoverResources(in: app_path('Filament/Resources'), for: 'App\\Filament\\Resources')
             ->discoverPages(in: app_path('Filament/Pages'), for: 'App\\Filament\\Pages')
@@ -95,6 +94,7 @@ class AdminPanelProvider extends PanelProvider
             ->databaseTransactions()
             ->breadcrumbs(false)
             ->sidebarFullyCollapsibleOnDesktop()
+            ->spa()
             ->topNavigation(fn()=> Auth::user()->settings['enable_top_navbar'])
             ;
     }
