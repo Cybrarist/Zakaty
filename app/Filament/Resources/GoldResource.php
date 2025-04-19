@@ -57,7 +57,6 @@ class GoldResource extends Resource
                     TextInput::make('name')
                         ->columnSpanFull()
                         ->string()
-                        ->required()
                         ->maxLength(255),
 
                     TextInputSelectAffix::make('weight')

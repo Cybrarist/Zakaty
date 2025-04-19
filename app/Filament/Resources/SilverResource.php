@@ -44,7 +44,6 @@ class SilverResource extends Resource
                         ->columnSpanFull()
                         ->label('Name')
                         ->string()
-                        ->required()
                         ->maxLength(255),
 
                     TextInputSelectAffix::make('weight')
