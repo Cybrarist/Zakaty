@@ -40,7 +40,7 @@ class UpdateAllPricesToUsdCommand extends Command
 
                 $user->money->each(function ($single_money_account) {
                     $single_money_account->updateQuietly([
-                        'usd_amount' =>  $single_money_account->amount * $single_money_account->currency->rate
+                        'usd_amount' =>  $single_money_account->amount  / $single_money_account->currency->rate
                     ]);
                 });
 
