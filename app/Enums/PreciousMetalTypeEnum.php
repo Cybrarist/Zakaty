@@ -22,19 +22,19 @@ enum PreciousMetalTypeEnum: string implements HasLabel
     public static function jewelleries(): array
     {
         return [
-            self::Bracelet,
-            self::BodyJewelleries,
-            self::Earring,
-            self::Necklace,
-            self::Ring,
+            self::Bracelet->value => self::Bracelet,
+            self::BodyJewelleries->value => self::BodyJewelleries,
+            self::Earring->value => self::Earring,
+            self::Necklace->value => self::Necklace,
+            self::Ring->value => self::Ring,
         ];
     }
     public static function non_jewelleries(): array
     {
         return [
-            self::Bar,
-            self::Coin,
-            self::Other,
+            self::Bar->value => self::Bar,
+            self::Coin->value => self::Coin,
+            self::Other->value => self::Other,
         ];
     }
 

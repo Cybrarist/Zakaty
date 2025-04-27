@@ -20,16 +20,16 @@ enum PreciousMetalColorEnum: string implements  HasLabel
     public static function gold()
     {
         return[
-            Str::headline(self::RoseGold->name),
-            Str::headline(self::White->name),
-            Str::headline(self::Yellow->name),
+            self::RoseGold->value => Str::headline(self::RoseGold->name),
+            self::White->value =>Str::headline(self::White->name),
+            self::Yellow->value => Str::headline(self::Yellow->name),
         ];
     }
 
     public static function silver()
     {
         return[
-            Str::headline(self::Silver->name),
+            self::Silver->value => Str::headline(self::Silver->name),
         ];
     }
 

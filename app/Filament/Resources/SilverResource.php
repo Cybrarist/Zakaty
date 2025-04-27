@@ -50,6 +50,7 @@ class SilverResource extends Resource
                         ->columnSpan(1)
                         ->numeric()
                         ->required()
+                        ->minValue(1)
                         ->select(fn() => Forms\Components\Select::make('weight_unit')
                             ->extraAttributes([
                                 'class' => 'w-20' // if you want to constrain the selects size, depending on your usecase
