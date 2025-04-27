@@ -83,6 +83,7 @@ class AdminPanelProvider extends PanelProvider
                     ->excludes([
                         UserResource::class
                     ])
+                    ->sortBy('navigation')
                     ->alwaysShowModal(),
                 FilamentJobsMonitorPlugin::make(),
             ])
@@ -94,7 +95,6 @@ class AdminPanelProvider extends PanelProvider
             ->databaseTransactions()
             ->breadcrumbs(false)
             ->sidebarFullyCollapsibleOnDesktop()
-            ->spa()
             ->topNavigation(fn()=> Auth::user()->settings['enable_top_navbar'])
             ;
     }
