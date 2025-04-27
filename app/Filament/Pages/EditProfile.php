@@ -17,6 +17,7 @@ use Filament\Forms\Components\DatePicker;
 use Filament\Forms\Components\Section;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
+use Filament\Forms\Get;
 use Filament\Support\Colors\Color;
 use Illuminate\Support\Facades\Auth;
 
@@ -33,7 +34,18 @@ class EditProfile extends \Filament\Pages\Auth\EditProfile
                     ->schema([
                         $this->getNameFormComponent()->columnSpan(1),
                         $this->getEmailFormComponent()->columnSpan(1),
-                        $this->getPasswordFormComponent()->columnSpan(1),
+                        Section::make('Password')
+                            ->columns(3)
+                            ->columnSpanFull()
+                            ->schema([
+                                $this->getPasswordFormComponent()->columnSpan(1),
+                                TextInput::make('passwordConfirmation')
+                                    ->label(__('filament-panels::pages/auth/edit-profile.form.password_confirmation.label'))
+                                    ->password()
+                                    ->required(fn (Get $get): bool => filled($get('password')))
+                                    ->dehydrated(false)
+
+                            ]),
 
                         Select::make('currency_id')
                             ->label('Default Currency')
