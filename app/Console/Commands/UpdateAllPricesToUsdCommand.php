@@ -34,7 +34,16 @@ class UpdateAllPricesToUsdCommand extends Command
         $gold_prices= CacheHelper::get_gold_prices();
         $silver_prices= CacheHelper::get_silver_prices();
 
-        User::with(['silver','money','gold' , 'money.currency'])
+        User::with(['silver' => function ($query) {
+                $query->withoutGlobalScopes();
+            },
+            'money'=> function ($query) {
+                $query->withoutGlobalScopes();
+            },
+            'gold'=> function ($query) {
+                $query->withoutGlobalScopes();
+            },
+            'money.currency'])
             ->get()
             ->each(function ($user) use ($gold_prices, $silver_prices) {
 

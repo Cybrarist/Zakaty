@@ -7,14 +7,17 @@ use App\Enums\KaratEnum;
 use App\Enums\PreciousMetalColorEnum;
 use App\Enums\PreciousMetalTypeEnum;
 use App\Enums\WeightEnum;
+use App\Models\Scopes\GoldScope;
 use App\Observers\GoldObserver;
 use Illuminate\Database\Eloquent\Attributes\ObservedBy;
+use Illuminate\Database\Eloquent\Attributes\ScopedBy;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 #[ObservedBy(GoldObserver::class)]
+#[ScopedBy(GoldScope::class)]
 class Gold extends Model
 {
     /** @use HasFactory<\Database\Factories\GoldFactory> */
