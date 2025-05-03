@@ -19,7 +19,7 @@ class MoneyFactory extends Factory
     {
         return [
             'name' => $this->faker->name(),
-            'currency_id' => $this->faker->numberBetween(1, 100),
+            'currency_id' => $this->faker->numberBetween(1, 1),
             'amount' => $this->faker->numberBetween(100, 100),
             'usd_amount' => $this->faker->numberBetween(100, 100),
             'type' => $this->faker->randomElement([MoneyTypeEnum::Cash->value]),

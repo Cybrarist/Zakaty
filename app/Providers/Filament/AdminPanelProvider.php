@@ -27,6 +27,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Request;
 use Illuminate\Support\Str;
 use Illuminate\View\Middleware\ShareErrorsFromSession;
+use Leandrocfe\FilamentApexCharts\FilamentApexChartsPlugin;
 use ShuvroRoy\FilamentSpatieLaravelHealth\FilamentSpatieLaravelHealthPlugin;
 
 class AdminPanelProvider extends PanelProvider
@@ -34,15 +35,6 @@ class AdminPanelProvider extends PanelProvider
     public function panel(Panel $panel): Panel
     {
 
-//        Auth::user()->settings['admin_panel_color'] ? Auth::user()->settings['admin_panel_color'] :
-//        function () use ($current_color) {
-//
-//            return [
-//                'primary' => $current_color,
-//            ];
-////                fn()=> Auth::user()->settings['admin_panel_color'] ? Color::{Str::title(Auth::user()->settings['admin_panel_color'])} : $current_color,
-//        }
-//            )
         return $panel
             ->default()
             ->id('admin')
@@ -83,9 +75,11 @@ class AdminPanelProvider extends PanelProvider
                     ->excludes([
                         UserResource::class
                     ])
-                    ->sortBy('navigation')
-                    ->alwaysShowModal(),
-                FilamentJobsMonitorPlugin::make(),
+                    ->sortBy('navigation'),
+                FilamentJobsMonitorPlugin::make()
+                    ->enableNavigation(fn () => Auth::user()->role == UserRoleEnum::Admin),
+                FilamentApexChartsPlugin::make()
+
             ])
             ->passwordReset()
 //            ->brandLogo(logo: asset("storage/bandit.png"))

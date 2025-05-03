@@ -7,7 +7,7 @@ use App\Enums\KaratEnum;
 use App\Enums\PreciousMetalColorEnum;
 use App\Enums\PreciousMetalTypeEnum;
 use App\Enums\WeightEnum;
-use App\Models\Scopes\SilverScope;
+use App\Models\Scopes\OwnRecordScope;
 use App\Observers\SilverObserver;
 use Illuminate\Database\Eloquent\Attributes\ObservedBy;
 use Illuminate\Database\Eloquent\Attributes\ScopedBy;
@@ -17,7 +17,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 #[ObservedBy(SilverObserver::class)]
-#[ScopedBy(SilverScope::class)]
+#[ScopedBy(OwnRecordScope::class)]
 class Silver extends Model
 {
     /** @use HasFactory<\Database\Factories\SilverFactory> */

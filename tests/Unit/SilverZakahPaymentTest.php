@@ -37,7 +37,8 @@ class SilverZakahPaymentTest extends TestCase
             'value' => 10
         ]);
 
-        User::factory()->create();
+        $this->actingAs( User::factory()->create());
+
     }
 
     public function test_silver_with_jewellery_considered_payment_amount(): void

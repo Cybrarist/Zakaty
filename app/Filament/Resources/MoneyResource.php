@@ -7,6 +7,7 @@ use App\Filament\Resources\MoneyResource\Pages;
 use App\Filament\Resources\MoneyResource\RelationManagers;
 use App\Models\Currency;
 use App\Models\Money;
+use App\Models\User;
 use Filament\Forms;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\Textarea;
@@ -57,21 +58,23 @@ class MoneyResource extends Resource
                     ->maxLength(255)
                     ->required(),
 
-                Select::make('currency_id')
-                    ->columnSpan(1)
-                    ->label('Currency')
-                    ->relationship('currency', 'name')
-                    ->default(Auth::user()->currency_id)
-                    ->native(false)
-                    ->preload()
-                    ->searchable()
-                    ->required(),
-
                 TextInput::make('amount')
                     ->columnSpan(1)
                     ->label('Amount')
                     ->numeric()
                     ->required(),
+
+                Select::make('currency_id')
+                    ->columnSpan(1)
+                    ->label('Default Currency')
+                    ->model(User::class)
+                    ->options(Currency::all()->pluck('code_name', 'id'))
+                    ->default(Auth::user()->currency_id)
+                    ->preload()
+                    ->required()
+                    ->searchable(),
+
+
 
                 Select::make('type')
                     ->columnSpan(1)
@@ -84,7 +87,8 @@ class MoneyResource extends Resource
 
                 Textarea::make('notes')
                     ->columnSpanFull()
-                ->nullable(),
+                    ->autosize()
+                    ->nullable(),
 
                 Forms\Components\FileUpload::make('images')
                     ->label('Images')

@@ -2,11 +2,14 @@
 
 namespace App\Providers;
 
+use App\Enums\UserRoleEnum;
 use BezhanSalleh\FilamentLanguageSwitch\LanguageSwitch;
 use Filament\Support\Facades\FilamentView;
 use Filament\Tables\Enums\FiltersLayout;
 use Filament\Tables\Table;
 use Filament\View\PanelsRenderHook;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\HtmlString;
 use Illuminate\Support\ServiceProvider;
 use Spatie\Health\Checks\Checks\DatabaseCheck;
@@ -49,6 +52,11 @@ class AppServiceProvider extends ServiceProvider
             DatabaseCheck::new(),
         ]);
 
+
+
+        Gate::define("view-logs", function (){
+            return Auth::user()->role == UserRoleEnum::Admin;
+        });
 
 //        LanguageSwitch::configureUsing(function (LanguageSwitch $switch) {
 //            $switch

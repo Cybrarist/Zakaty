@@ -53,6 +53,14 @@ return [
             'throw' => false,
         ],
 
+        'zakah_payment' => [
+            'driver' => 'local',
+            'root' => storage_path('app/public/zakah_payment'),
+            'url' => env('APP_URL').'/storage/zakah_payment',
+            'visibility' => 'public',
+            'throw' => false,
+        ],
+
         'gold' => [
             'driver' => 'local',
             'root' => storage_path('app/public/gold'),

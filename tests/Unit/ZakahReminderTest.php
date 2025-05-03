@@ -36,8 +36,7 @@ class ZakahReminderTest extends TestCase
         // set the min nisab
         Cache::put('today_minimum_nisab', 50);
 
-        User::factory()->create();
-
+        $this->actingAs( User::factory()->create());
     }
 
     public function test_zakah_reminder_running_before_one_month(): void

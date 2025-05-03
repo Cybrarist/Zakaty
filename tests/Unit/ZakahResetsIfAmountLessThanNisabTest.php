@@ -45,20 +45,22 @@ class ZakahResetsIfAmountLessThanNisabTest extends TestCase
     {
         $user = User::first();
 
+        $this->actingAs($user);
+
         $money_to_create = [
             [
                 'name' => 'First',
-                'amount' => 36700,
-                'usd_amount' => 36700,
+                'amount' => 36.7,
+                'usd_amount' => 36.7,
                 'currency_id' => 1,
-                'type' => MoneyTypeEnum::Cash->value
+                'type' => MoneyTypeEnum::Cash->value,
             ],
             [
                 'name' => 'Second',
-                'amount' => 36700,
-                'usd_amount' => 36700,
+                'amount' => 36.7,
+                'usd_amount' => 36.7,
                 'currency_id' => 1,
-                'type' => MoneyTypeEnum::Cash->value
+                'type' => MoneyTypeEnum::Cash->value,
             ],
         ];
 

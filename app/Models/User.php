@@ -125,6 +125,11 @@ class User extends Authenticatable implements FilamentUser
         return $this->hasMany(Silver::class);
     }
 
+    public function zakah_payments(): User|HasMany
+    {
+        return $this->hasMany(ZakahPayment::class);
+    }
+
     public function canAccessPanel(Panel $panel): bool
     {
         return true;

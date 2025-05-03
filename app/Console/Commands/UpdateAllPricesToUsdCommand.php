@@ -6,6 +6,7 @@ use App\Helpers\CacheHelper;
 use App\Helpers\ZakahHelper;
 use App\Models\Currency;
 use App\Models\User;
+use App\Models\ZakahPayment;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Artisan;
 
@@ -34,7 +35,9 @@ class UpdateAllPricesToUsdCommand extends Command
         $gold_prices= CacheHelper::get_gold_prices();
         $silver_prices= CacheHelper::get_silver_prices();
 
-        User::with(['silver' => function ($query) {
+        $all_currencies= Currency::pluck('rate', 'code')->toArray();
+
+        User::with(['silver' => function ($query){
                 $query->withoutGlobalScopes();
             },
             'money'=> function ($query) {
@@ -43,9 +46,12 @@ class UpdateAllPricesToUsdCommand extends Command
             'gold'=> function ($query) {
                 $query->withoutGlobalScopes();
             },
+            'zakah_payments'=> function ($query) {
+                $query->withoutGlobalScopes();
+            },
             'money.currency'])
             ->get()
-            ->each(function ($user) use ($gold_prices, $silver_prices) {
+            ->each(function ($user) use ($gold_prices, $silver_prices, $all_currencies) {
 
                 $user->money->each(function ($single_money_account) {
                     $single_money_account->updateQuietly([
@@ -63,6 +69,12 @@ class UpdateAllPricesToUsdCommand extends Command
                 $user->silver->each(function ($silver_account) use ($silver_prices) {
                     $silver_account->updateQuietly([
                         'usd_amount' => $silver_account->weight_in_grams *  $silver_prices['silver_price_' . $silver_account->karat->value]
+                    ]);
+                });
+
+                $user->zakah_payments()->each(function (ZakahPayment $zakah_payment) use ($all_currencies) {
+                    $zakah_payment->updateQuietly([
+                        'usd_amount' =>  $zakah_payment->amount  / $all_currencies[$zakah_payment->currency_id]
                     ]);
                 });
 

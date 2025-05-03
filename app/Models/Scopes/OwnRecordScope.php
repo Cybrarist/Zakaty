@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Scope;
 use Illuminate\Support\Facades\Auth;
 
-class SilverScope implements Scope
+class OwnRecordScope implements Scope
 {
     /**
      * Apply the scope to a given Eloquent query builder.
