@@ -29,7 +29,7 @@ return new class extends Migration
             $table->text("notes")->nullable();
             $table->text("images")->nullable();
 
-            $table->foreignIdFor(Currency::class)->constrained();
+            $table->foreignIdFor(Currency::class)->nullable()->constrained();
             $table->foreignIdFor(User::class)->constrained();
         });
     }

@@ -125,7 +125,7 @@ class ZakahPaymentResource extends Resource
                         })
                         ->native(false)
                         ->preload()
-                        ->required()
+                        ->nullable()
                         ->searchable(),
 
                 ])

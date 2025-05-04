@@ -22,9 +22,9 @@ class ZakahPaymentFactory extends Factory
         return [
             'amount' => $this->faker->numberBetween(100, 10000),
             'usd_amount' => $this->faker->numberBetween(100, 10000),
-            'type' => $this->faker->randomElement(ZakahPaymentTypeEnum::array()),
-            'status' => $this->faker->randomElement(ZakahPaymentStatusEnum::array()),
-            'payment_method' => $this->faker->randomElement(ZakahPaymentMethodEnum::array()),
+            'type' => $this->faker->randomElement(ZakahPaymentTypeEnum::values()),
+            'status' => $this->faker->randomElement(ZakahPaymentStatusEnum::values()),
+            'payment_method' => $this->faker->randomElement(ZakahPaymentMethodEnum::values()),
             'user_id' => 1
         ];
     }

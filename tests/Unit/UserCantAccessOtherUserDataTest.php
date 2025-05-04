@@ -31,6 +31,15 @@ class UserCantAccessOtherUserDataTest extends TestCase
             'rate' => 1,
         ]);
 
+        ExchangePrice::create([
+            'name' => 'silver_price_24' ,
+            'value' => 10
+        ]);
+        ExchangePrice::create([
+            'name' => 'gold_price_24' ,
+            'value' => 10
+        ]);
+
         User::factory(2)->create();
 
         Money::factory(10)->create();
