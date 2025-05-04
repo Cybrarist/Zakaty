@@ -36,7 +36,7 @@ class ZakahHelper
     public static function update_money_zakah_data_for_user(User $user): void
     {
         $user->update([
-            'total_money_usd' => $user->money()->sum('usd_amount') / 1000,
+            'total_money_usd' => $user->money()->withoutGlobalScopes()->sum('usd_amount') / 1000,
         ]);
     }
 
@@ -46,7 +46,7 @@ class ZakahHelper
         $prices = CacheHelper::get_gold_prices();
         $total_gold_value = 0;
 
-        $user_golds = Gold::where('user_id', $user->id);
+        $user_golds = Gold::withoutGlobalScopes()->where('user_id', $user->id);
 
         foreach ($user_golds->get() as $gold) {
             $total_gold_value += $gold->weight_in_grams * $prices['gold_price_'.$gold->karat->value];
@@ -64,7 +64,7 @@ class ZakahHelper
         $prices = CacheHelper::get_silver_prices();
         $total_silver_value = 0;
 
-        $user_silvers = Silver::where('user_id', $user->id);
+        $user_silvers = Silver::withoutGlobalScopes()->where('user_id', $user->id);
 
         foreach ($user_silvers->get() as $silver) {
             $total_silver_value += $silver->weight_in_grams * $prices['silver_price_'.$silver->karat->value];
