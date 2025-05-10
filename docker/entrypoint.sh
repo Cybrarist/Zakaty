@@ -23,6 +23,8 @@ php artisan migrate --force --seed
 php artisan filament:optimize-clear
 php artisan optimize:clear
 
+php artisan exchange:refresh-all
+
 php artisan optimize
 php artisan filament:optimize
 
