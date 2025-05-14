@@ -1,15 +1,16 @@
 <?php
 
-namespace App\Filament\Resources\CurrencyResource\Pages;
+namespace App\Filament\Resources\ExchangePriceResource\Pages;
 
-use App\Filament\Resources\CurrencyResource;
+use App\Filament\Resources\ExchangePriceResource;
 use App\Helpers\CacheHelper;
 use Filament\Actions;
 use Filament\Resources\Pages\EditRecord;
+use Illuminate\Support\Facades\Cache;
 
-class EditCurrency extends EditRecord
+class EditExchangePrice extends EditRecord
 {
-    protected static string $resource = CurrencyResource::class;
+    protected static string $resource = ExchangePriceResource::class;
 
     protected function getHeaderActions(): array
     {

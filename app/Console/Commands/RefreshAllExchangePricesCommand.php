@@ -29,6 +29,7 @@ class RefreshAllExchangePricesCommand extends Command
         Artisan::call('exchange:price');
         Artisan::call('gold:price');
         Artisan::call('silver:price');
+        Artisan::call('metal:fallback');
 
         Artisan::call('zakah:update-usd-amounts');
 
