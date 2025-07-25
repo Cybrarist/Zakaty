@@ -3,11 +3,15 @@
 namespace App\Filament\Resources;
 
 use App\Enums\MoneyTypeEnum;
-use App\Filament\Resources\MoneyResource\Pages;
-use App\Filament\Resources\MoneyResource\RelationManagers;
+use App\Enums\TransactionTypeEnum;
+use App\Filament\Resources\TransactionResource\Pages;
+use App\Filament\Resources\TransactionResource\RelationManagers;
+use App\Helpers\CacheHelper;
 use App\Models\Currency;
 use App\Models\Money;
+use App\Models\Transaction;
 use App\Models\User;
+use Filament\Actions\DeleteAction;
 use Filament\Forms;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\Textarea;
@@ -18,29 +22,17 @@ use Filament\Tables;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Filters\SelectFilter;
 use Filament\Tables\Table;
+use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\SoftDeletingScope;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Number;
+use Malzariey\FilamentDaterangepickerFilter\Filters\DateRangeFilter;
 
-class MoneyResource extends Resource
+class TransactionResource extends Resource
 {
-    protected static ?string $model = Money::class;
+    protected static ?string $model = Transaction::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-banknotes';
-    protected static ?int $navigationSort=1;
-
-    public static function getLabel(): ?string
-    {
-        return __('general.money.title');
-    }
-
-    /**
-     * @return string|null
-     */
-    public static function getPluralLabel(): ?string
-    {
-        return __('general.money.title');
-    }
-
+    protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
 
     public static function form(Form $form): Form
     {
@@ -53,7 +45,7 @@ class MoneyResource extends Resource
                         'lg'=>2
                     ])
                     ->autofocus()
-                    ->label('Account Name')
+                    ->label('Name')
                     ->string()
                     ->maxLength(255)
                     ->required(),
@@ -64,84 +56,100 @@ class MoneyResource extends Resource
                     ->numeric()
                     ->required(),
 
+                Forms\Components\DatePicker::make('date')
+                    ->columnSpan(1)
+                    ->label('Date')
+                    ->default(today())
+                    ->required(),
+
                 Select::make('currency_id')
                     ->columnSpan(1)
                     ->label(__('general.currency.title'))
                     ->model(User::class)
-                    ->options(Currency::all()->pluck('code_name', 'id'))
+                    ->options(Currency::whereIn('id', CacheHelper::get_currencies_for_user_money_accounts(Auth::id()))
+                        ->get()
+                        ->pluck('code_name', 'id'))
                     ->default(Auth::user()->currency_id)
                     ->preload()
                     ->required()
                     ->searchable(),
 
-
-
                 Select::make('type')
                     ->columnSpan(1)
                     ->label('Type')
-                    ->options(MoneyTypeEnum::class)
+                    ->options(TransactionTypeEnum::class)
                     ->required()
-                    ->default('cash')
+                    ->default('income')
                     ->preload()
                     ->native(false),
+
+                Select::make('money_id')
+                    ->relationship('money', 'name')
+                    ->options(function (Forms\Get $get) {
+                        return Money::query()
+                            ->where('currency_id', $get('currency_id'))
+                            ->pluck('name', 'id');
+                    })
+                    ->label('Money')
+                    ->required()
+                    ->searchable()
+                    ->preload()
+                    ->columnSpan(1)
+                    ->live(),
 
                 Textarea::make('notes')
                     ->columnSpanFull()
                     ->autosize()
                     ->nullable(),
 
-                Forms\Components\FileUpload::make('images')
-                    ->label('Images')
-                    ->image()
-                    ->disk('money')
-                    ->columnSpanFull()
-                    ->panelLayout('grid')
-                    ->previewable()
-                    ->openable()
-                    ->downloadable(),
-
             ]);
+
     }
 
     public static function table(Table $table): Table
     {
-
         return $table
-            ->emptyStateHeading(__('general.money.table.empty_heading'))
             ->modifyQueryUsing(function ($query) {
-                $query->with(['currency']);
+                $query->with(['currency', 'money']);
             })
+            ->defaultSort('date','desc')
             ->columns([
+                TextColumn::make('date')->sortable(),
+
                 TextColumn::make('name')->searchable()->sortable(),
+
                 TextColumn::make('amount')
                     ->label('Amount')
                     ->formatStateUsing(function ($record) {
                         return $record->currency->currency_symbol . Number::format($record->amount);
                     }),
-                TextColumn::make('usd_amount')
-                    ->sortable()
-                    ->label('Amount($)')
-                    ->prefix('$')
-                    ->formatStateUsing(fn ($state) =>  Number::format($state)),
+
+
+                TextColumn::make('money.name')
+                    ->label('Money'),
 
                 TextColumn::make('type')
                     ->label('Type')
+                    ->color(fn($state) => TransactionTypeEnum::get_color($state))
                     ->badge()
+
             ])
             ->filters([
+                DateRangeFilter::make('date'),
+
                 SelectFilter::make('currency_id')
                     ->label(__('general.currency.title'))
                     ->options(Currency::all()->pluck('name', 'id'))
                     ->multiple(),
+
                 SelectFilter::make('type')
-                    ->label(__('general.money.type'))
-                    ->options(MoneyTypeEnum::class)
-                    ->multiple(),
+                    ->label('Type')
+                    ->options(TransactionTypeEnum::class)
+                    ->multiple()
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),
                 Tables\Actions\DeleteAction::make()
-                ->after(fn($livewire)=> $livewire->dispatch('refresh_money_widgets')),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
@@ -153,17 +161,16 @@ class MoneyResource extends Resource
     public static function getRelations(): array
     {
         return [
-            RelationManagers\TransactionsRelationManager::class,
-
+            //
         ];
     }
 
     public static function getPages(): array
     {
         return [
-            'index' => Pages\ListMoney::route('/'),
-            'create' => Pages\CreateMoney::route('/create'),
-            'edit' => Pages\EditMoney::route('/{record}/edit'),
+            'index' => Pages\ListTransactions::route('/'),
+            'create' => Pages\CreateTransaction::route('/create'),
+            'edit' => Pages\EditTransaction::route('/{record}/edit'),
         ];
     }
 }

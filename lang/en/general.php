@@ -10,10 +10,23 @@ return [
     | everything that is available in /dashboard and widgets inside the app
     |
     */
-
+    'name' => 'Name',
+    'amount' => 'Amount',
+    'type' => 'Type',
+    'date' => 'Date',
+    'description' => 'Description',
+    'action' => 'Action',
+    'edit' => 'Edit',
+    'delete' => 'Delete',
+    'add' => 'Add',
+    'save' => 'Save',
     'color' => 'Color',
     'notes' => 'Notes',
     'images' => 'Images',
+    'documents' => 'Documents',
+    'attachments' => 'Attachments',
+
+
 
     'nisab'=>[
         'today' => "Nisab Today",

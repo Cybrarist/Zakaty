@@ -18,28 +18,17 @@ class DatabaseSeeder extends Seeder
             CurrencySeeder::class,
         ]);
 
-//        if (app()->isLocal()){
-//
-//            $this->call([
-//                GoldSeeder::class,
-//                SilverSeeder::class,
-//            ]);
-//
-//            User::create([
-//                'name' => 'Test',
-//                'email' => 'test@test.com',
-//                'password' => 'password',
-//                'role' => UserRoleEnum::Admin,
-//                'currency_id' => 1
-//            ]);
-//        }
-//
-//        $this->call([
-//            MoneySeeder::class,
-//            GoldSeeder::class,
-//            SilverSeeder::class,
-//        ]);
-//
+        if (app()->isLocal()){
+
+            User::create([
+                'name' => 'Test',
+                'email' => 'test@test.com',
+                'password' => 'password',
+                'role' => UserRoleEnum::Admin,
+                'currency_id' => 1
+            ]);
+        }
+
         Artisan::call('exchange:refresh-all');
     }
 }

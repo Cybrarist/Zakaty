@@ -3,7 +3,7 @@
 namespace App\Helpers;
 
 use App\Models\ExchangePrice;
-use App\Models\User;
+use App\Models\Money;
 use Illuminate\Support\Facades\Cache;
 
 class CacheHelper
@@ -49,11 +49,23 @@ class CacheHelper
     }
 
 
-    public static function clear_cache_for_zakah_requirements()
+    public static function clear_cache_for_zakah_requirements(): void
     {
         Cache::forget("today_minimum_nisab");
         Cache::forget("precious_metal_price");
         Cache::forget("silver_prices");
         Cache::forget("gold_prices");
+    }
+
+
+    public static function get_currencies_for_user_money_accounts(int $user_id)
+    {
+        return Cache::remember("currencies_for_money_{$user_id}", 86400, function () use ($user_id) {
+            return Money::withoutGlobalScopes()
+                ->where('user_id', $user_id)
+                ->distinct('currency_id')
+                ->pluck('currency_id')
+                ->toArray();
+        });
     }
 }

@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Casts\MoneyCast;
 use App\Enums\MoneyTypeEnum;
 use App\Models\Scopes\OwnRecordScope;
 use App\Observers\MoneyObserver;
@@ -10,6 +11,7 @@ use Illuminate\Database\Eloquent\Attributes\ScopedBy;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 #[ObservedBy(MoneyObserver::class)]
 #[ScopedBy(OwnRecordScope::class)]
@@ -33,8 +35,8 @@ class Money extends Model
     {
         return [
             'images' => 'array',
-            'amount' => \App\Casts\MoneyCast::class,
-            'usd_amount' => \App\Casts\MoneyCast::class,
+            'amount' => MoneyCast::class,
+            'usd_amount' => MoneyCast::class,
             'type' => MoneyTypeEnum::class,
         ];
     }
@@ -45,6 +47,10 @@ class Money extends Model
         return $this->belongsTo(Currency::class);
     }
 
+    public function transactions(): HasMany
+    {
+        return $this->hasMany(Transaction::class);
+    }
     public function user(): BelongsTo
     {
         return $this->belongsTo(User::class);
